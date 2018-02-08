@@ -110,6 +110,7 @@
         },
         methods: {
             init(){
+                var vm = this;
                 let options = {
                     selector: '#' + this.id,
                     skin: false,
@@ -119,16 +120,18 @@
                     init_instance_callback : (editor) => {
                         this.editor = editor;
                         editor.on('KeyUp', (e) => {
-                           this.submitNewContent();
+                            this.submitNewContent();
                         });
                         editor.on('Change', (e) => {
                             if(this.editor.getContent() !== this.value){
-                               this.submitNewContent();
+                                this.submitNewContent();
                             }
                         });
-                        editor.on('init', (e) => {
-                            editor.setContent(this.content);
-                            this.$emit('input', this.content);
+                    },
+                    setup(editor){
+                        editor.on('init',(e)=>{
+                            editor.setContent(vm.content);
+                            vm.$emit('input', vm.content);
                         });
                     }
                 };
